@@ -1,0 +1,10 @@
+div > i,a 
+{
+    margin: 0 5px 0 5px;
+}
+
+.footer 
+{
+    bottom: 0;
+    background-color: #f5f5f5
+}
