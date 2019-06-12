@@ -1,0 +1,16 @@
+{
+  "name": "spmod-web",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "ts-node-dev --poll src/index.ts"
+  },
+  "author": "FFx0q",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "http-server": "file:lib/http-server"
+  }
+}
