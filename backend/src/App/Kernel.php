@@ -64,26 +64,26 @@
                     $message = $this->cache->get($hash);
                 }
 
-                if ($build === false) {
-                    $this->data[] =[
-                        'build' => $value[2],
-                        'data' => [[
+                    if ($build === false) {
+                        $this->data[] =[
+                            'build' => $value[2],
+                            'data' => [[
+                                'system' => $value[1],
+                                'compiler' => $value[4],
+                                'type' => $type,
+                                'file' => $file
+                            ]],
+                            'commit' => $hash,
+                            'message' => $message
+                        ];
+                    } else {
+                        $this->data[$build]['data'][] = [
                             'system' => $value[1],
                             'compiler' => $value[4],
                             'type' => $type,
                             'file' => $file
-                        ]],
-                        'commit' => $hash,
-                        'message' => $message
-                    ];
-                } else {
-                    $this->data[$build]['data'][] = [
-                        'system' => $value[1],
-                        'compiler' => $value[4],
-                        'type' => $type,
-                        'file' => $file
-                    ];
-                }
+                        ];
+                    }
             }
             rsort($this->data);
 

@@ -9,8 +9,6 @@
 
         public function __construct(Database $db)
         {
-            $parts = explode('\\', static::class);
-            $this->table = end($parts);
             $this->db = $db;
         }
 

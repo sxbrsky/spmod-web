@@ -11,9 +11,9 @@
             $this->db = new Database();
         }
 
-        public function isCached(string $hash)
+        public function isCached(string $hash) : bool
         {
-            $sql = "SELECT commit_hash FROM cache WHERE commit_hash = :hash";
+            $sql = "SELECT commit_hash FROM commits WHERE commit_hash = :hash";
             
             try {
                 $stmt = $this->db->getConnection()->prepare($sql);
@@ -34,7 +34,7 @@
 
         public function get(string $hash)
         {
-            $sql = "SELECT commit_hash, commit_message FROM cache WHERE commit_hash = :hash";
+            $sql = "SELECT commit_hash, commit_msg FROM commits WHERE commit_hash = :hash";
 
             try {
                 $stmt = $this->db->getConnection()->prepare($sql);
@@ -50,7 +50,7 @@
 
         public function add(string $hash, string $message)
         {
-            $sql = "INSERT INTO cache(commit_hash, commit_message) VALUES (:hash, :message)";
+            $sql = "INSERT INTO commits(commit_hash, commit_msg) VALUES (:hash, :message)";
 
             try {
                 $stmt = $this->db->getConnection()->prepare($sql);
