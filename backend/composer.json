@@ -1,0 +1,13 @@
+{
+    "name": "ffx0q/backend",
+    "type": "project",
+    "require": {
+        "vlucas/phpdotenv": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "App\\Base\\": "src/App/"
+        }
+    }
+}
