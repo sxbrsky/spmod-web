@@ -30,8 +30,6 @@
 
         private function getAllBuilds()
         {
-            //$build = new Builds($this->db);
-            //$result = $build->findAll();
             $result = $this->kernel->getData();
 
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -42,8 +40,7 @@
 
         private function getBuild(int $build)
         {
-            $buildModel = new Builds($this->db);
-            $result = $buildModel->find($build);
+            $result = $this->kernel->getData($build);
             
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
             $response['body'] = json_encode($result);

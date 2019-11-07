@@ -2,7 +2,8 @@
     "name": "ffx0q/backend",
     "type": "project",
     "require": {
-        "vlucas/phpdotenv": "^3.3"
+        "vlucas/phpdotenv": "^3.3",
+        "aws/aws-sdk-php": "^3.114"
     },
     "autoload": {
         "psr-4": {

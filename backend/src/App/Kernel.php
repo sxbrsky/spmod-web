@@ -1,6 +1,7 @@
 <?php
     namespace App\Base;
 
+    use App\Base\Database;
     use App\Base\Cache;
 
     class Kernel
@@ -9,13 +10,14 @@
         protected $buildDir = null;
 
         private $cache;
+        private $db;
         private $files = [];
         private $data = [];
         private $hash = [];
 
         public function __construct()
         {
-            $
+            $this->db = new Database();
             $this->cache = new Cache($db);
 
             if ($this->rootDir == null) {
@@ -39,20 +41,18 @@
             return json_decode($content);    
         }
 
-        public function getBuilds()
+        public function getData($build = null)
         {
-            foreach (new \DirectoryIterator($this->buildDir) as $file) {
-                if ($file->isDot()) continue;
-                $this->files[] = $info;
+            $buildModel = new Builds($this->db);
+            
+            if ($build === null) {
+                $result = $buildModel->findAll();
+            } else {
+                $result = $buildModel->find($build);
             }
-        }
+            
 
-        public function getData()
-        {
-            $files = getBuilds();
-            $parts = explode('-', $files);
-
-            foreach ($parts as $key => $value) {
+            foreach ($bld as $result => $value) {
                 $hash = $value[3];
                 $build = array_search($value[2], array_column($this->data, 'build'));
                 $type = explode('.', $value[5])[0];
