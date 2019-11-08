@@ -34,7 +34,7 @@
             $c = curl_init();
             curl_setopt($c,CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
             curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($c, CURLOPT_URL, 'https://api.github.com/repos/Amaroq7/SPMod/commits/'.$hash);
+            curl_setopt($c, CURLOPT_URL, getenv('GITHUB_API').$hash);
             
             $content = curl_exec($c);
             curl_close($c);

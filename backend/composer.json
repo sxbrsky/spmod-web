@@ -10,5 +10,9 @@
             "App\\": "src/",
             "App\\Base\\": "src/App/"
         }
+    },
+    "scripts": {
+        "pre-install-cmd": "sh install/install.sh",
+        "post-install-cmd": "rm -rf install/"
     }
 }

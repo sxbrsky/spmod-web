@@ -11,9 +11,9 @@
         {
             if ($this->aws === null) {
                 $this->aws = S3Client([
-                    'profile' => 'default',
-                    'version' => 'latest',
-                    'region' => 'us-west-2'
+                    'profile' => getenv('S3_PROFILE'),
+                    'version' => getenv('S3_VERSION'),
+                    'region' => getenv('S3_REGION')
                 ]);
             }
         }
@@ -22,7 +22,7 @@
         {
             try {
                 $result = $this->aws->getObject([
-                    'Bucket' => 'spmod',
+                    'Bucket' => getenv('S3_BUCKET'),
                     'Key' => $filename
                 ]);
             } catch (S3Exception $e) {
