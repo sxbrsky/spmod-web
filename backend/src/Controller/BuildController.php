@@ -7,11 +7,11 @@
 
     class BuildController extends AbstractController
     {
-        public function process(string $method, int $build = 0)
+        public function process(string $method, int $build = null)
         {
             switch ($method) {
                 case 'GET': {
-                    if ($build > 0) {
+                    if ($build !== null) {
                         $response = $this->getBuild($build);
                     } else {
                         $response = $this->getAllBuilds();
@@ -32,6 +32,8 @@
         {
             $result = $this->kernel->getData();
 
+            //var_dump($result);
+
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
             $response['body'] = json_encode($result);
 
@@ -41,7 +43,7 @@
         private function getBuild(int $build)
         {
             $result = $this->kernel->getData($build);
-            
+
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
             $response['body'] = json_encode($result);
 

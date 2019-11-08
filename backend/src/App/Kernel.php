@@ -3,6 +3,7 @@
 
     use App\Base\Database;
     use App\Base\Cache;
+    use App\Model\Builds;
 
     class Kernel
     {
@@ -18,7 +19,7 @@
         public function __construct()
         {
             $this->db = new Database();
-            $this->cache = new Cache($db);
+            $this->cache = new Cache($this->db);
 
             if ($this->rootDir == null) {
                 $this->rootDir = $_SERVER['DOCUMENT_ROOT'];
@@ -51,37 +52,36 @@
                 $result = $buildModel->find($build);
             }
             
+            foreach ($result as $key => $value) {
+                $hash = $value['commit_hash'];
+                $build = array_search($value['build'], array_column($this->data, 'build'));
 
-            foreach ($bld as $result => $value) {
-                $hash = $value[3];
-                $build = array_search($value[2], array_column($this->data, 'build'));
-                $type = explode('.', $value[5])[0];
-
-                if (!$this->cache->isCached($hash)) {
+                if ($this->cache->isCached($hash)) {
                     $message = $this->getCommitData($hash);
-                    $this->cache->add($hash, $message);
+                    $this->cache->add($hash, $message->commit->message);
                 } else {
                     $message = $this->cache->get($hash);
                 }
 
                     if ($build === false) {
-                        $this->data[] =[
-                            'build' => $value[2],
-                            'data' => [[
-                                'system' => $value[1],
-                                'compiler' => $value[4],
-                                'type' => $type,
-                                'file' => $file
+                        $this->data[] = [
+                            'build' => $value['build'],
+                            'version' => $value['version'],
+                            'builds' => [[
+                                'system' => $value['system'],
+                                'compiler' => $value['compiler'],
+                                'type' => $value['type'],
+                                'file' => $value['filename']
                             ]],
                             'commit' => $hash,
                             'message' => $message
                         ];
                     } else {
-                        $this->data[$build]['data'][] = [
-                            'system' => $value[1],
-                            'compiler' => $value[4],
-                            'type' => $type,
-                            'file' => $file
+                        $this->data[$build]['builds'][] = [
+                            'system' => $value['system'],
+                            'compiler' => $value['compiler'],
+                            'type' => $value['type'],
+                            'file' => $value['filename']
                         ];
                     }
             }

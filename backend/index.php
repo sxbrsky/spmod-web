@@ -14,7 +14,7 @@
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $uri = explode('/', $uri);
 
-    $param = isset($uri[2]) ? $uri[2] : 0;
+    $param = (isset($uri[2]) && $uri[2] != '') ? $uri[2] : null;
 
     switch ($uri[1]) {
         case 'build': {

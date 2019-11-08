@@ -19,7 +19,7 @@
 
         public function find(int $build)
         {
-            $sql = "SELECT * FROM builds WHERE build = :build";
+            $sql = "SELECT * FROM builds INNER JOIN commits ON builds.commit_id = commits.id WHERE builds.build = :build";
             try {
                 $stmt = $this->getDb()->prepare($sql);
                 $stmt->bindParam(':build', $build);
@@ -33,7 +33,7 @@
         
         public function findAll()
         {
-            $sql = "SELECT * FROM builds";
+            $sql = "SELECT * FROM builds INNER JOIN commits ON builds.commit_id = commits.id";
             try {
                 $stmt = $this->getDb()->prepare($sql);
                 $stmt->execute();

@@ -1,6 +1,7 @@
 <?php
     namespace App\Base;
 
+    use PDO;
     use App\Base\Database;
 
     class Cache
@@ -8,7 +9,7 @@
         private $db = null;
         public function __construct(Database $db)
         {
-            $this->db = new Database();
+            $this->db = $db;
         }
 
         public function isCached(string $hash) : bool
@@ -42,7 +43,7 @@
                 $stmt->bindParam(':hash', $hash);
                 $stmt->execute();
 
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $stmt->fetchAll(PDO::FETCH_ASSOC)[0]['commit_msg'];
             } catch (PDOException $e) {
                 echo ($e->getMessge());
             }
