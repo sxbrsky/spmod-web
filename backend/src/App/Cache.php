@@ -35,7 +35,7 @@
 
         public function get(string $hash)
         {
-            $sql = "SELECT commit_hash, commit_msg FROM commits WHERE commit_hash = :hash";
+            $sql = "SELECT id, commit_hash, commit_msg FROM commits WHERE commit_hash = :hash";
 
             try {
                 $stmt = $this->db->getConnection()->prepare($sql);
@@ -43,7 +43,7 @@
                 $stmt->bindParam(':hash', $hash);
                 $stmt->execute();
 
-                return $stmt->fetchAll(PDO::FETCH_ASSOC)[0]['commit_msg'];
+                return $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
             } catch (PDOException $e) {
                 echo ($e->getMessge());
             }

@@ -60,12 +60,14 @@
                     $message = $this->getCommitData($hash);
                     $this->cache->add($hash, $message->commit->message);
                 } else {
-                    $message = $this->cache->get($hash);
+                    $commit = $this->cache->get($hash);
+                    $message = $commit['commit_msg'];
                 }
 
-                    if ($build === false) {
-                        $this->data[] = [
-                            'build' => $value['build'],
+                $buildModel->save($commit['id'], $build, $system, $version, $compiler, $type, $filename);
+                if ($build === false) {
+                    $this->data[] = [
+                        'build' => $value['build'],
                             'version' => $value['version'],
                             'builds' => [[
                                 'system' => $value['system'],
