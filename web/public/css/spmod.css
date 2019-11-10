@@ -1,15 +1,167 @@
-.footer {
-    height: 50px;
-}
-body {
-    background: #2a2a2a;
-    color: #ececec;
-}
-.navbar-brand {
-    color: #5cc1ce !important;
+* {
+    box-sizing: border-box;
 }
 
-.navbar-default {
-    background-color: transparent;
-    border-color: transparent;
+body {
+    background: #2a2a2a;
+    margin: 0;
 }
+
+a {
+    color: #ececec;
+    text-decoration: none;
+}
+a:visited {
+    color: #ececec; 
+    text-decoration: none;
+}
+a:hover {
+    color: #ececec; 
+    text-decoration: none;
+}
+
+a:link {
+    color: #ececec; 
+    text-decoration: none;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    min-height: calc(100vh - 20vh);
+    min-width: 100vw;
+
+    padding-right: 30px;
+    padding-left: 30px;
+
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header > .brand {
+    font-weight: 500;
+    color: #16DB65;
+}
+
+.header > .menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu > .item {
+    list-style: none;
+    padding: 15px 0;
+    width: 50%;
+}
+
+.item > a:hover {
+    border-bottom: 1px solid #16DB65;
+}
+
+.table {
+    min-width: 90%;
+    border-collapse: collapse;
+}
+
+.table-header {
+    text-align: left;
+    font-size: 0.75em;
+    font-weight: 700;
+    padding: 16px 16px 16px 0;
+
+    line-height: 1.4px;
+    color: #16DB65;
+    text-transform: uppercase;
+    /*border-bottom: 1px solid rgb(230,230,230);*/
+}
+
+.table-content {
+    white-space: nowrap;
+    font-size: 1em;
+    padding: 0;
+    height: 50px;
+    color: #ececec;
+}
+.build {
+    width: 5%;
+}
+.details {
+    width: 55%;
+}
+.download {
+    width: 5%;
+}
+
+.download i {
+    font-size: 2em;
+}
+
+.footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: end;
+}
+
+.footer a {
+    color: #16DB65;
+}
+
+.header, .footer {
+    height: 10vh;
+    color: #ececec; 
+    padding: 1em;
+}
+
+.modal {
+    margin: 75px auto;
+	padding: 20px;
+	background: #fff;
+	border: 1px solid #666;
+	width: 300px;
+	box-shadow: 0 0 50px rgba(0,0,0,0.5);
+	position: relative;
+}
+
+.modal h2{
+    margin-top: 0;
+    color: #666;
+    font-family: "Trebuchet MS", Tahoma, 
+}
+
+.modal .light {
+    border-color: #aaa;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+	transition: opacity 200ms;
+    visibility: hidden;
+	opacity: 0;
+}
+.overlay .light {
+    background: rgba(255,255,255,0.5);
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;    
+}
+.cancel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+  }

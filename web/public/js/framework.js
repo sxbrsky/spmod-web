@@ -9,28 +9,22 @@ function append(parent, el) {
 }
 
 function createModal(build, builds) {
-  //append(document.querySe)
-	var modal = `<div class="modal modal-sm" id=${build}>
-<div class="modal-container">
-<div class="modal-header">
-<a href="#close" class="modal-overlay" aria-label="Close"></a>
-<div class="modal-title h5">Build ${build}</div></div>
-<div class="modal-body">
+	var modal = `<div id=${build} class="overlay light">
+	<a class="cancel" href="#"></a>
+	<div class="modal">
+	<h2> build ${build}
   `;
 	builds.forEach(item => {
-      modal += "<div class='columns'>";
       if (item.system == "linux") {
-			modal += `<div class='column'><i class="fab fa-linux"></i><br>
-                    ${item.compiler} - ${item.type} <a href="${url}/builds/${item.file}"><i class="fas fa-angle-double-down"></i></a>
-                </div>`
+			modal += `<i class="fab fa-linux"></i><br>
+                    ${item.compiler} - ${item.type} <a href="${url}/builds/${item.file}"><i class="fas fa-angle-double-down"></i></a>`
       } else if (item.system == "windows") {
 			modal += `<div class='column'>
                     <i class="fab fa-windows"></i><br>
-                    ${item.compiler} - ${item.type} <a href="${url}/builds/${item.file}"><i class="fas fa-angle-double-down"></i></a>
-                  </div>`
+                    ${item.compiler} - ${item.type} <a href="${url}/builds/${item.file}"><i class="fas fa-angle-double-down"></i></a>`
 		}
   })
-  modal += "</div></div></div></div>";
+  modal += "</div></div>";
 	return modal;
 }
 
@@ -43,20 +37,19 @@ fetch(url + "/build")
 			let tr = createNode('tr'),
 				build = createNode('td'),
 				details = createNode('td'),
-				download = createNode('td'),
-				source = createNode('td');
+				download = createNode('td');
 
-			console.log(item.builds);
+			build.className = "table-content build";
+			details.className = "table-content details";
+			download.className = "table-content download";
+
 			build.innerHTML += item.build;
-			details.innerHTML += item.message;
-			download.innerHTML += `<a href="#${item.build}"><i class="fas fa-cloud-download-alt"></i></a>`;
-			source.innerHTML += `<a href="http://github.com/Amaroq7/SPMod/tree/${item.commit}/"><i class="fab fa-github"></i></a>` + createModal(item.build, item.builds);
-
+			details.innerHTML += `<a href="http://github.com/Amaroq7/SPMod/tree/${item.commit}/"> ${item.message}</a>`;
+			download.innerHTML += `<a href="#${item.build}"><i class="far fa-arrow-alt-circle-down"></i></a>`;
 
 			append(tr, build);
-			append(tr, details);
 			append(tr, download);
-			append(tr, source);
+			append(tr, details);
 			append(tbody, tr);
 
 		});
