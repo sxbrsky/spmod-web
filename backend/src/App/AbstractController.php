@@ -14,4 +14,9 @@
             $this->db = new Database();
             $this->kernel = new Kernel();
         }
+
+        public function getKernel()
+        {
+            return $this->kernel;
+        }
     }

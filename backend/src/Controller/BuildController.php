@@ -11,11 +11,7 @@
         {
             switch ($method) {
                 case 'GET': {
-                    if ($build !== null) {
-                        $response = $this->getBuild($build);
-                    } else {
-                        $response = $this->getAllBuilds();
-                    }
+                    $response = $this->getAllBuilds() ?? $this->getBuild($build);
                     break;
                 }
                 default: {
@@ -30,9 +26,8 @@
 
         private function getAllBuilds()
         {
-            $result = $this->kernel->getData();
+            $result = $this->getKernel()->buildArray();
 
-            //var_dump($result);
 
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
             $response['body'] = json_encode($result);
@@ -40,9 +35,9 @@
             return $response;
         }
 
-        private function getBuild(int $build)
+        private function getBuild(string $build)
         {
-            $result = $this->kernel->getData($build);
+            $result = $this->getKernel()->buildArray($build);
 
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
             $response['body'] = json_encode($result);

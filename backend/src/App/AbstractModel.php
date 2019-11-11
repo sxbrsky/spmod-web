@@ -3,26 +3,30 @@
 
     use App\Base\Database;
     use PDO;
-    abstract class Model
+    
+    abstract class AbstractModel
     {
         protected $db = null;
+        protected $table = null;
 
         public function __construct(Database $db)
         {
             $this->db = $db;
+            
+            $parts = explode('\\', static::class);
+            $this->table = end($parts);
         }
 
-        public function getDb()
+        public function getDatabase()
         {
             return $this->db->getConnection();
         }
-
-        public function find(int $build)
+        public function find(int $id)
         {
-            $sql = "SELECT * FROM builds INNER JOIN commits ON builds.commit_id = commits.id WHERE builds.build = :build";
+            $sql = "SELECT * FROM {$this->table} WHERE id = :id";
             try {
                 $stmt = $this->getDb()->prepare($sql);
-                $stmt->bindParam(':build', $build);
+                $stmt->bindParam(':id', $build);
                 $stmt->execute();
 
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -33,7 +37,7 @@
         
         public function findAll()
         {
-            $sql = "SELECT * FROM builds INNER JOIN commits ON builds.commit_id = commits.id";
+            $sql = "SELECT * FROM {$this->table}";
             try {
                 $stmt = $this->getDb()->prepare($sql);
                 $stmt->execute();
