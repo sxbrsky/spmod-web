@@ -3,7 +3,8 @@
     "type": "project",
     "require": {
         "vlucas/phpdotenv": "^3.3",
-        "aws/aws-sdk-php": "^3.114"
+        "aws/aws-sdk-php": "^3.114",
+        "aws/aws-php-sns-message-validator": "^1.6"
     },
     "autoload": {
         "psr-4": {
