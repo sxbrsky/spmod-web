@@ -1,4 +1,4 @@
-const url = "http://localhost:8080";
+const url = "http://spmod.eu/api/";
 
 function createNode(element) {
 	return document.createElement(element);
@@ -28,7 +28,7 @@ function createModal(build, builds) {
 	return modal;
 }
 
-fetch(url + "/build")
+fetch(url + '/build/')
 	.then(data => data.json())
 	.then(data => {
 		const tbody = createNode("tbody");
@@ -44,7 +44,7 @@ fetch(url + "/build")
 			download.className = "table-content download";
 
 			build.innerHTML += item.build;
-			details.innerHTML += `<a href="http://github.com/Amaroq7/SPMod/tree/${item.commit}/"> ${item.message}</a>`;
+			details.innerHTML += `<a href="https://github.com/Amaroq7/SPMod/tree/${item.commit}/"> ${item.message}</a>`;
 			download.innerHTML += `<a href="#${item.build}"><i class="far fa-arrow-alt-circle-down"></i></a>`;
 
 			append(tr, build);
