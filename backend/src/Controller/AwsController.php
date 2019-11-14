@@ -47,9 +47,9 @@
         private function notificationBuild(object $msgObj) : void
         {
             $message = json_decode($msgObj->{'Message'});
+            $awsInstance = App\Base\Kernel::getAws();
 
             foreach ($message->{'Records'} as $key => $build) {
-                $awsInstance = new Aws;
                 $awsInstance->downloadBuild($build->s3->object->key, $build->s3->bucket->name);
             }
         }

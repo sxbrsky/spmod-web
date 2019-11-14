@@ -6,17 +6,14 @@
     use App\Model\Kernel;
     use Aws\S3\S3Client;
     use Aws\S3\Exception\S3Exception;
+    use Aws\Sns\Message;
+    use Aws\Sns\MessageValidator;
     class Aws
     {
         private $aws = null;
-        private $db = null;
 
         public function __construct()
         {
-            if ($this->db === null) {
-                $this->db = new Database;
-            }
-            
             if ($this->aws === null) {
                 $this->aws = S3Client([
                     'profile' => getenv('S3_PROFILE'),
@@ -29,14 +26,17 @@
         public function downloadBuild($filename, $bucket)
         {
             try {
-                $build = new Builds($this->$db);
+                $build = new Builds(Kernel::getDatabase());
                 
                 $fileArray = $this->explodeFilename($filename);
-                $build->save();
+                $commit_id = Kernel::getCommitData()['id'];
+
+                $build->save($commit_id, $fileArray['build'], $fileArray['system'], $fileArray['compiler'], $fileArray['type'], $filename);
 
                 $result = $this->aws->getObject([
                     'Bucket' => $bucket,
-                    'Key' => $filename
+                    'Key' => $filename,
+                    'SaveAs' => Kernel::getBuildDir().$filename
                 ]);
             } catch (S3Exception $e) {
                 echo $e->getMessage() . PHP_EOL;
@@ -56,5 +56,17 @@
             ];
 
             return $build;
+        }
+
+        static public function isValidAwsSNSMesssage() : bool {
+            $awsSNSMessage = null;
+            try {
+                $awsSNSMessage = Message::fromRawPostData();
+            } catch (Exception $e) {
+                return false;
+            }
+         
+            $messageValidator = new MessageValidator();
+            return $messageValidator->isValid($awsSNSMessage);
         }
     }

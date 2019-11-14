@@ -4,6 +4,7 @@
 
     use App\Base\AbstractController;
     use App\Model\Builds;
+    use App\Base\Kernel;
 
     class BuildController extends AbstractController
     {
@@ -26,7 +27,7 @@
 
         private function getAllBuilds()
         {
-            $result = $this->getKernel()->buildArray();
+            $result = Kernel::buildArray();
 
 
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -37,7 +38,7 @@
 
         private function getBuild(string $build)
         {
-            $result = $this->getKernel()->buildArray($build);
+            $result = Kernel::buildArray($build);
 
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
             $response['body'] = json_encode($result);
