@@ -35,9 +35,9 @@
             }
         }
 
-        public function save($commit_id, $build, $system, $version, $compiler, $type, $filename)
+        public function save($commit_id, $build, $system, $compiler, $type, $filename)
         {
-            $sql = "INSERT INTO builds(`commit_id`, `build`, `system`, `version`, compiler, `type`, `filename` VALUES ?, ?, ?, ?, ?, ?, ?";
+            $sql = "INSERT INTO builds(`commit_id`, `build`, `system`, compiler, `type`, `filename` VALUES (?, ?, ?, ?, ?, ?)";
 
             return $this->getDatabase()->prepare($sql)->execute([$commit_id, $build, $system, $version, $compiler, $type, $filename]);
         }

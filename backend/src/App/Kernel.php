@@ -2,47 +2,55 @@
     namespace App\Base;
 
     use App\Base\Database;
-    use App\Base\Cache;
+    use App\Base\Aws;
     use App\Model\Builds;
     use App\Model\Commits;
 
     class Kernel
     {
-        protected $rootDir = null;
-        protected $buildDir = null;
-
-        protected $db;
-        private $data = [];
-
-        public function __construct()
+        public static function getDatabase() : Database 
         {
-            $this->db = new Database();
+            return new Database();
+        }
 
-            if ($this->rootDir == null) {
-                $this->rootDir = $_SERVER['DOCUMENT_ROOT'];
-                if ($this->buildDir == null) {
-                    $this->buildDir = $this->rootDir.'/builds';
+        public static function getAws() : Aws
+        {
+            return new Aws();
+        }
+
+
+        public static function getRootDir()
+        {
+            $reflection = new \ReflectionObject(Kernel);
+            $dir = dirname($reflection->getFileName());
+            while (!file_exists($dir.'/composer.json')) {
+                if ($dir === dirname($dir)) {
+                    return $dir;
                 }
-            }   
+            $dir = dirname($dir);
+            }
+
+            return $dir;
         }
 
-        public function getDatabase() : Database 
+        public static function getBuildDir()
         {
-            return $this->db;
+            return Kernel::getRootDir() . '/builds/';
         }
 
-        public function buildArray($build = null)
+        public static function buildArray($build = null)
         {
-            $buildModel = new Builds($this->getDatabase());
+            $data = [];
+            $buildModel = new Builds(Kernel::getDatabase());
             $result = $buildModel->getBuilds() ?? $buildModel->getBuild($build);
 
             foreach ($result as $key => $value) {
                 $hash = $value['commit_hash'];
-                $build = array_search($value['build'], array_column($this->data, 'build'));
-                $message = $this->getCommitMessage($hash);
+                $build = array_search($value['build'], array_column($data, 'build'));
+                $message = Kernel::getCommitMessage($hash);
 
                 if ($build === false) {
-                    $this->data[] = [
+                    $data[] = [
                         'build' => $value['build'],
                         'version' => $value['version'],
                         'builds' => [[
@@ -55,7 +63,7 @@
                         'message' => $message
                     ];
                 } else {
-                    $this->data[$build]['builds'][] = [
+                    $data[$build]['builds'][] = [
                         'system' => $value['system'],
                         'compiler' => $value['compiler'],
                         'type' => $value['type'],
@@ -63,27 +71,27 @@
                     ];
                 }
             }
-            rsort($this->data);
+            rsort($data);
 
-            return $this->data;
+            return $data;
         }
 
-        private function getCommitMessage(string $hash)
+        public static function getCommitMessage(string $hash)
         {
-            $commitModel = new Commits($this->getDatabase());
+            $commitModel = new Commits(Kernel::getDatabase());
 
             if ($commitModel->hasHash($hash)) {
                 $commit = $commitModel->get($hash);
                 $message = $commit['commit_msg'];
             } else {
-                $message = $this->getCommitData($hash);
+                $message = getCommitData($hash);
                 $commitModel->save($hash, $message);
             }
 
             return $message;
         }
 
-        private function getCommitData(string $hash)
+        private static function getCommitData(string $hash)
         {
             $c = curl_init();
             curl_setopt($c,CURLOPT_USERAGENT,'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
