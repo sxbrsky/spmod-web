@@ -1,7 +1,7 @@
 <?php
     require_once __DIR__.'/vendor/autoload.php';
 
-
+    var_dump(App\Base\Kernel::getBuildDir());
     $dotenv = Dotenv\Dotenv::create(__DIR__);
     $dotenv->load();
 

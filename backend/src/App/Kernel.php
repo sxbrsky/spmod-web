@@ -21,16 +21,7 @@
 
         public static function getRootDir()
         {
-            $reflection = new \ReflectionObject(Kernel);
-            $dir = dirname($reflection->getFileName());
-            while (!file_exists($dir.'/composer.json')) {
-                if ($dir === dirname($dir)) {
-                    return $dir;
-                }
-            $dir = dirname($dir);
-            }
-
-            return $dir;
+            return $_SERVER['DOCUMENT_ROOT'];
         }
 
         public static function getBuildDir()
