@@ -7,8 +7,10 @@
 #include <Poco/Net/HTTPServerRequest.h>
 #include <Poco/Net/HTTPServerResponse.h>
 #include <Poco/Net/ServerSocket.h>
+#include <Poco/Net/HTTPServerParams.h>
 #include <Poco/Util/ServerApplication.h>
 #include <Poco/StringTokenizer.h>
+#include <Poco/ThreadPool.h>
 
 // SPModWeb
 #include "ApiRequestHandler.hpp"

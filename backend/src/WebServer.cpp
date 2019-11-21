@@ -9,7 +9,14 @@ namespace SPModWeb
 
     int WebServer::main(const std::vector<std::string> &args) {
         Poco::UInt16 port = static_cast<Poco::UInt16>(config().getUInt("port", 8080));
-        Poco::Net::HTTPServer srv(new SPModWeb::RequestHandlerFactory, port);
+        Poco::Net::ServerSocket serverSocket(port);
+        Poco::ThreadPool threadPool(12, 32);
+        Poco::Net::HTTPServerParams *serverParams = new Poco::Net::HTTPServerParams();
+
+        // TODO: Change version when building
+        serverParams->setSoftwareVersion("SPModWeb/0.1.0");
+
+        Poco::Net::HTTPServer srv(new SPModWeb::RequestHandlerFactory, threadPool, serverSocket, serverParams);
 
         srv.start();
         logger().information("Server started");
