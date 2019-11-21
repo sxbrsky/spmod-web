@@ -8,6 +8,8 @@ namespace SPModWeb
     {
         public:
             void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response);
+            
+        private:
             void getAllBuilds(Poco::Net::HTTPServerResponse& response);
             void getBuild(int id);
     };

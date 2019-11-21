@@ -3,7 +3,7 @@
 namespace SPModWeb {
   void WebServer::initialize(Poco::Util::Application &self) {
     loadConfiguration();
-    Poco::Util::ServerApplication::initialize(self);
+    initialize(self);
   }
 
   int WebServer::main(const std::vector<std::string> &) {
@@ -11,12 +11,12 @@ namespace SPModWeb {
     Poco::Net::HTTPServer srv(new SPModWeb::RequestHandlerFactory, port);
 
     srv.start();
-    Poco::Util::ServerApplication::logger().information("Server started");
-    Poco::Util::ServerApplication::waitForTerminationRequest();
-    Poco::Util::ServerApplication::logger().information("Stopped Server");
+    logger().information("Server started");
+    waitForTerminationRequest();
+    logger().information("Stopped Server");
     srv.stop();
 
-    return Poco::Util::Application::EXIT_OK;
+    return Application::EXIT_OK;
   }
 }
 
