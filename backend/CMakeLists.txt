@@ -28,7 +28,8 @@ set(LIBS
 set(SOURCES 
     src/ApiRequestHandler.cpp
     src/RequestHandlerFactory.cpp
-    src/WebServer.cpp    
+    src/WebServer.cpp
+    src/BadRequestHandler.cpp
 )
 
 add_executable(Server ${SOURCES})

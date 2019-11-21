@@ -13,6 +13,7 @@
 #include <Poco/ThreadPool.h>
 
 // SPModWeb
+#include "BadRequestHandler.hpp"
 #include "ApiRequestHandler.hpp"
 #include "RequestHandlerFactory.hpp"
 #include "WebServer.hpp"

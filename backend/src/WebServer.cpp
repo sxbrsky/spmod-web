@@ -12,6 +12,8 @@ namespace SPModWeb
         Poco::Net::ServerSocket serverSocket(port);
         Poco::ThreadPool threadPool(12, 32);
         Poco::Net::HTTPServerParams* serverParams = new Poco::Net::HTTPServerParams();
+
+// TODO: Asynchronously logging and proper formatting of log messages
 #if defined NDEBUG
         logger().setLevel(Poco::Message::PRIO_INFORMATION);
 #else
