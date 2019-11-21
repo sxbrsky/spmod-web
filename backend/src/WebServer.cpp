@@ -2,7 +2,7 @@
 
 namespace SPModWeb
 {
-    void WebServer::initialize(Poco::Util::Application &self) {
+    void WebServer::initialize(Poco::Util::Application& self) {
         loadConfiguration();
         Poco::Util::ServerApplication::initialize(self);
     }
@@ -11,7 +11,12 @@ namespace SPModWeb
         Poco::UInt16 port = static_cast<Poco::UInt16>(config().getUInt("port", 8080));
         Poco::Net::ServerSocket serverSocket(port);
         Poco::ThreadPool threadPool(12, 32);
-        Poco::Net::HTTPServerParams *serverParams = new Poco::Net::HTTPServerParams();
+        Poco::Net::HTTPServerParams* serverParams = new Poco::Net::HTTPServerParams();
+#if defined NDEBUG
+        logger().setLevel(Poco::Message::PRIO_INFORMATION);
+#else
+        logger().setLevel(Poco::Message::PRIO_DEBUG);
+#endif
 
         // TODO: Change version when building
         serverParams->setSoftwareVersion("SPModWeb/0.1.0");
