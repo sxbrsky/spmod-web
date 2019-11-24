@@ -12,6 +12,7 @@ namespace SPModWeb
         Poco::Net::ServerSocket serverSocket(port);
         Poco::ThreadPool threadPool(12, 32);
         Poco::Net::HTTPServerParams* serverParams = new Poco::Net::HTTPServerParams();
+        Poco::Crypto::initializeCrypto();
 
 // TODO: Asynchronously logging and proper formatting of log messages
 #if defined NDEBUG
@@ -31,6 +32,7 @@ namespace SPModWeb
         logger().information("Stopped Server");
         srv.stop();
 
+        Poco::Crypto::uninitializeCrypto();
         return Poco::Util::Application::EXIT_OK;
     }
 }

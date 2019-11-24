@@ -13,7 +13,9 @@ namespace SPModWeb
         }
 
         if (split_uri[0] == "api") {
-           return new SPModWeb::ApiRequestHandler;
+            return new SPModWeb::ApiRequestHandler;
+        } else if (split_uri[0] == "aws") {
+            return new SPModWeb::AwsRequestHandler;
         }
 
         return new BadRequestHandler();

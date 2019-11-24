@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
 project(SPModWeb VERSION 0.1.0)
 
-
-include_directories(include)
-
 find_library (POCO_FOUNDATION PocoFoundation)
 find_library (POCO_UTIL PocoUtil)
 find_library (POCO_NET PocoNet)
+find_library (POCO_CRYPTO PocoCrypto)
+find_library (POCO_NETSSL PocoNetSSL)
 find_library (POCO_JSON PocoJSON)
 find_library (PTHREAD pthread)
 
@@ -22,15 +21,19 @@ set(LIBS
     ${POCO_UTIL}
     ${POCO_NET}
     ${POCO_JSON}
+    ${POCO_CRYPTO}
+    ${POCO_NETSSL}
     ${PTHREAD}
 )
 
 set(SOURCES 
     src/ApiRequestHandler.cpp
     src/RequestHandlerFactory.cpp
+    src/AwsRequestHandler.cpp
     src/WebServer.cpp
     src/BadRequestHandler.cpp
 )
 
-add_executable(Server ${SOURCES})
-target_link_libraries(Server ${LIBS})
+add_executable(${PROJECT_NAME} ${SOURCES})
+target_link_libraries(${PROJECT_NAME} ${LIBS})
+target_include_directories(${PROJECT_NAME} PRIVATE include)
