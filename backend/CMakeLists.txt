@@ -7,6 +7,9 @@ find_library (POCO_NET PocoNet)
 find_library (POCO_CRYPTO PocoCrypto)
 find_library (POCO_NETSSL PocoNetSSL)
 find_library (POCO_JSON PocoJSON)
+find_library (AWS_SDK_CORE aws-cpp-sdk-core)
+find_library (AWS_SDK_SNS aws-cpp-sdk-sns)
+find_library (AWS_SDK_S3 aws-cpp-sdk-s3)
 find_library (PTHREAD pthread)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -26,6 +29,12 @@ set(LIBS
     ${PTHREAD}
 )
 
+set(AWS_LIBS
+    ${AWS_SDK_CORE}
+    ${AWS_SDK_SNS}
+    ${AWS_SDK_S3}
+)
+
 set(SOURCES 
     src/ApiRequestHandler.cpp
     src/RequestHandlerFactory.cpp
@@ -35,5 +44,6 @@ set(SOURCES
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${LIBS})
+target_link_libraries(${PROJECT_NAME} ${LIBS} ${AWS_LIBS})
 target_include_directories(${PROJECT_NAME} PRIVATE include)
+configure_file("config/${PROJECT_NAME}.json" ${CMAKE_BINARY_DIR} COPYONLY)

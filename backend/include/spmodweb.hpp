@@ -16,11 +16,18 @@
 #include <Poco/Crypto/RSADigestEngine.h>
 #include <Poco/SHA1Engine.h>
 #include <Poco/URI.h>
+#include <Poco/UUIDGenerator.h>
 #include <Poco/Base64Decoder.h>
 #include <Poco/JSON/Stringifier.h>
 #include <Poco/JSON/Object.h>
 #include <Poco/JSON/Parser.h>
 #include <Poco/JSON/Query.h>
+
+// AWS
+#include <aws/core/Aws.h>
+#include <aws/sns/SNSClient.h>
+#include <aws/core/auth/AWSCredentialsProvider.h>
+#include <aws/sns/model/ConfirmSubscriptionRequest.h>
 
 // SPModWeb
 #include "BadRequestHandler.hpp"

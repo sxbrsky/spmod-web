@@ -1,0 +1,15 @@
+{
+    "server": {
+        "port": 8080
+    },
+    "aws": {
+        "sns": {
+            "accessKeyId": "",
+            "secretKeyId": ""
+        },
+        "s3": {
+            "accessKeyId": "",
+            "secretKeyId": ""
+        }
+    }
+}

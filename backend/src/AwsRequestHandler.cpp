@@ -2,6 +2,9 @@
 
 namespace SPModWeb
 {
+    AwsRequestHandler::AwsRequestHandler(Aws::SNS::SNSClient& snsClient) : m_awsSNSClient(snsClient)
+    {}
+
     void AwsRequestHandler::handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response)
     {
         Poco::Util::Application& app = Poco::Util::Application::instance();
@@ -9,33 +12,50 @@ namespace SPModWeb
         std::string bodyRequest;
         Poco::StreamCopier::copyToString(request.stream(), bodyRequest);
 
-        if (!isValidAwsRequest(bodyRequest)) {
+        try {
+            Poco::JSON::Parser jsonParser;
+            Poco::Dynamic::Var parsedJson = jsonParser.parse(bodyRequest);
+            Poco::JSON::Query jsonQuery(parsedJson);
+
+            isValidAwsRequest(jsonQuery);
+
+            if (!request.has(AMAZON_HEADER_TYPE)) {
+                
+            } else {
+                if (request.get(AMAZON_HEADER_TYPE) != "Notification") {
+                    confirmSubscription(jsonQuery);
+                } else {
+
+                }
+                response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK);
+                std::ostream& os = response.send();
+                os << "OK";
+                os.flush();
+            }
+        } catch (const AwsRequestBadRequestException& e) {
+            // TODO: Create commons for handlers to return status codes
             response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_BAD_REQUEST);
             std::ostream& os = response.send();
-            os << "Bad Request";
+            os << e.getReason();
             os.flush();
-        } else {
-            response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK);
+        } catch (const AwsRequestInternalServerErrorException& e) {
+            response.setStatus(Poco::Net::HTTPResponse::HTTPStatus::HTTP_INTERNAL_SERVER_ERROR);
             std::ostream& os = response.send();
-            os << "OK";
+            os << e.getReason();
             os.flush();
         }
     }
 
-    bool AwsRequestHandler::isValidAwsRequest(std::string_view bodyRequest)
+    void AwsRequestHandler::isValidAwsRequest(const Poco::JSON::Query& jsonQuery)
     {
-        Poco::JSON::Parser jsonParser;
-        Poco::Dynamic::Var parsedJson = jsonParser.parse(bodyRequest.data());
-        Poco::JSON::Query jsonQuery(parsedJson);
-
         {
             Poco::Dynamic::Var singatureVerVar = jsonQuery.find("SignatureVersion");
             try {
-                if (singatureVerVar.isEmpty() || singatureVerVar.toString() != "1") {
-                    return false;
+                if (singatureVerVar.isEmpty() || singatureVerVar != "1") {
+                    throw AwsRequestBadRequestException("Signature version is missing or is not equal to 1");
                 }
             } catch (const Poco::BadCastException &e) {
-                return false;
+                throw AwsRequestBadRequestException(e.displayText());
             }
         }
 
@@ -47,7 +67,7 @@ namespace SPModWeb
         Poco::Dynamic::Var singingCertVar = jsonQuery.find("SigningCertURL");
 
         if (messageVar.isEmpty() || messageIdVar.isEmpty() || timestampVar.isEmpty() || topicArnVar.isEmpty() || typeVar.isEmpty() || singingCertVar.isEmpty()) {
-            return false;
+            throw AwsRequestBadRequestException("Incomplete AWS SNS message");
         }
 
         Poco::Dynamic::Var subjectVar = jsonQuery.find("Subject");
@@ -71,8 +91,6 @@ namespace SPModWeb
         stringToHash += "TopicArn\n" + topicArnVar.toString() + '\n';
         stringToHash += "Type\n" + typeVar.toString() + '\n';
 
-        Poco::Util::Application::instance().logger().information("string: %s", stringToHash);
-
         try {
             Poco::URI signingCertUri(singingCertVar.toString());
             Poco::Net::HTTPSClientSession httpsClientSession(signingCertUri.getHost());
@@ -85,7 +103,7 @@ namespace SPModWeb
             std::istream& responseStream = httpsClientSession.receiveResponse(httpResponse);
 
             if (httpResponse.getStatus() != Poco::Net::HTTPResponse::HTTPStatus::HTTP_OK) {
-                throw std::runtime_error("Failed to get certificate");
+                throw AwsRequestBadRequestException("Could not retrieve the certificate");
             }
 
             Poco::Crypto::X509Certificate x509Cert(responseStream);
@@ -104,9 +122,36 @@ namespace SPModWeb
             Poco::Crypto::RSADigestEngine rsaDigestEngine(rsaPublicKey, "SHA1");
             rsaDigestEngine.update(stringToHash);
 
-            return rsaDigestEngine.verify(digest);
-        } catch (const std::exception &e) {
-            return false;
+            if (!rsaDigestEngine.verify(digest)) {
+                throw AwsRequestBadRequestException("Invalid AWS SNS message");
+            }
+        } catch (const Poco::SyntaxException& e) {
+            throw AwsRequestBadRequestException(e.displayText());
+        } catch (const Poco::NotFoundException& e) {
+            throw AwsRequestInternalServerErrorException(e.displayText());
+        }
+    }
+
+    void AwsRequestHandler::confirmSubscription(const Poco::JSON::Query& jsonQuery) {
+        Aws::SNS::Model::ConfirmSubscriptionRequest confirmRequest;
+        confirmRequest.SetTopicArn(jsonQuery.find("TopicArn").toString());
+        confirmRequest.SetToken(jsonQuery.find("Token").toString());
+
+        Poco::UUID uuid = Poco::UUIDGenerator::defaultGenerator().createRandom();
+
+        Poco::Util::Application::instance().logger().information("Confirmation of subscription request %s received", uuid.toString());
+
+        const auto ctxUuid = std::make_shared<const Aws::Client::AsyncCallerContext>(uuid.toString());
+        m_awsSNSClient.ConfirmSubscriptionAsync(confirmRequest, confirmSubscriptionHandler, ctxUuid);
+    }
+
+    void AwsRequestHandler::confirmSubscriptionHandler(const Aws::SNS::SNSClient* client, const Aws::SNS::Model::ConfirmSubscriptionRequest& request, const Aws::SNS::Model::ConfirmSubscriptionOutcome& outcome, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& ctx)
+    {
+        const Poco::Util::Application& app = Poco::Util::Application::instance();
+        if (outcome.IsSuccess()) {
+            app.logger().information("Confirmation of subscription request %s succeed", ctx->GetUUID());
+        } else {
+            app.logger().error("Confirmation of subscription request %s failed\nCode: %i\nMessage: %s", ctx->GetUUID(), static_cast<int>(outcome.GetError().GetErrorType()), outcome.GetError().GetMessage());
         }
     }
 }

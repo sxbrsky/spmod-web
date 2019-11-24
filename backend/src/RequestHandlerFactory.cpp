@@ -2,6 +2,9 @@
 
 namespace SPModWeb
 {
+    RequestHandlerFactory::RequestHandlerFactory(Aws::SNS::SNSClient& awsSNSClient) : m_awsSNSClient(awsSNSClient)
+    {}
+
     Poco::Net::HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const Poco::Net::HTTPServerRequest& request)
     {
         const std::string& uri = request.getURI();
@@ -14,8 +17,8 @@ namespace SPModWeb
 
         if (split_uri[0] == "api") {
             return new SPModWeb::ApiRequestHandler;
-        } else if (split_uri[0] == "aws") {
-            return new SPModWeb::AwsRequestHandler;
+        } else if (split_uri[0] == "aws" && request.getMethod() == Poco::Net::HTTPRequest::HTTP_POST) {
+            return new SPModWeb::AwsRequestHandler(m_awsSNSClient);
         }
 
         return new BadRequestHandler();
