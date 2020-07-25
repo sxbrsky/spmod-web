@@ -9,6 +9,8 @@ const loadAllBuilds = () => {
         if (err) throw err
 
         files.forEach(file => {
+            if (!file.startsWith('spmod')) return
+
             let stat = fs.statSync(join(config.buildPath, file))
 
             let parts = file.split('-')
