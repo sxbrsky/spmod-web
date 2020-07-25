@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700)");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #2a2a2a;
+  margin: 0;
+}
+
+a {
+  color: #ececec;
+  text-decoration: none;
+
+  &:visited {
+    color: #ececec;
+    text-decoration: none;
+  }
+  &:link {
+    color: #ececec;
+    text-decoration: none;
+  }
+}
+
+.container {
+  flex-wrap: wrap;
+  justify-content: center;
+  display: flex;
+  min-width: 100vw;
+  min-height: calc(100vh - 20vh);
+  padding: 0 30px;
+  margin: 0 auto;
+  color: #ececec;
+}
+
+table {
+  width: 50vw;
+}
+
+table th {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: #16DB65;
+  text-transform: uppercase;
+}
+
+table td {
+  color: #ececec;
+}
+
+table tbody tr:nth-child(1) {
+  border-bottom: 1px solid #cbcaca;
+}
+
+table td i {
+  padding-right: 10px
+}
+
+table td:hover a, table td:hover i {
+  color: #16DB65;
+}
+
+table th, table td {
+  font-size: 1.3em;
+  text-align: left;
+  padding: 10px 20px;
+}

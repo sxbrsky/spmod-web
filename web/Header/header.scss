@@ -1,0 +1,14 @@
+.header {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+
+  height: 10vh;
+  color: #ececec;
+  padding: 1em;
+
+  .brand {
+    font-weight: 500;
+    color: #16DB65;
+  }
+}
