@@ -20,6 +20,7 @@
     "rollup-plugin-terser": "^6.1.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.721.0",
     "http-server": "git+https://github.com/FFx0q/http-server.git",
     "pm2": "^4.4.0"
   }
