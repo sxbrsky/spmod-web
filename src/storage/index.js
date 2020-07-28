@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { join } = require('path')
-const config = require('./config')
+const config = require('../config')
 
 const builds = []
 
@@ -42,10 +42,10 @@ try {
     console.log(e.message)
 }
 
-exports.getBuild = (id) => {
+exports.findOne = (id) => {
     return builds.filter(b => b.build === id)[0]
 }
 
-exports.getBuilds = () => {
+exports.find = () => {
     return builds
 }

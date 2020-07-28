@@ -1,14 +1,5 @@
-const { HTTPServer } = require('http-server')
-const { BuildController } = require('./controller')
+const server = require('./server')
 
-const config = require('./config')
-
-const server = new HTTPServer({
-    key: config.key,
-    cert: config.cert,
-}, config.webRoot)
-
-server.get('/builds', BuildController.all)
-server.get('/builds/:id', BuildController.get)
-
-server.listen(8080)
+server()
+    .then(() => console.log('Server started'))
+    .catch(e => console.log(e))

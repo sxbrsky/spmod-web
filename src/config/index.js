@@ -10,5 +10,6 @@ module.exports = {
     webRoot,
     buildPath,
     key: readFileSync(join(sslPath, 'key.pem')),
-    cert: readFileSync(join(sslPath, 'cert.pem'))
+    cert: readFileSync(join(sslPath, 'cert.pem')),
+    port: 8080
 }
