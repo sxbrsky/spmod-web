@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rollup -c",
     "start:dev": "nodemon src/index.js",
-    "start:prod": "pm2 start src/index.js --name spmod-web"
+    "start:prod": "npm run build && pm2 start src/index.js --name spmod-web"
   },
   "author": "FFx0q",
   "license": "MIT",
