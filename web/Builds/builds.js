@@ -2,7 +2,7 @@ import { parseRequestUrl } from '../Utils'
 
 const getBuild = async (id) => {
     try {
-        const response = await fetch(`https://localhost:8080/builds/${id}`)
+        const response = await fetch(`https://localhost:8080/api/builds/${id}`)
         const json = await response.json()
 
         return json

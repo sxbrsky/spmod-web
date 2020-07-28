@@ -1,6 +1,6 @@
 const getBuilds = async () => {
     try {
-        const response = await fetch(`https://localhost:8080/builds`)
+        const response = await fetch(`https://localhost:8080/api/builds`)
         const json = await response.json()
 
         return json
