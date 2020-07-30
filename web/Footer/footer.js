@@ -3,7 +3,7 @@ import './footer.scss'
 const Footer = {
     before_render: async () => {
         const footer = document.createElement('footer')
-        footer.className = 'header'
+        footer.className = 'footer'
 
         return footer
     },

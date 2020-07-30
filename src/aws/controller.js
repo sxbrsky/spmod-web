@@ -29,7 +29,6 @@ const reciveNotification = (req, res) => {
             s3Stream.on('error', err =>  res.status(500).json({ err, stack: err.stack }) )
             s3Stream.pipe(fileStream).on('error', err =>  res.status(500).json({ err, stack: err.stack }) )
         }
-
     })
 }
 

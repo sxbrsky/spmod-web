@@ -24,9 +24,13 @@ const router = async () => {
 
     const page = routes[url]
 
-    header.innerHTML = await Header.render()
-    content.innerHTML = await page.render()
-    footer.innerHTML = await Footer.render()
+    try {
+        header.innerHTML = await Header.render()
+        footer.innerHTML = await Footer.render()
+        content.innerHTML = await page.render()
+    } catch (e) {
+        console.log(e, e.stack)
+    }
 }
 
 window.onload = async (e) => {

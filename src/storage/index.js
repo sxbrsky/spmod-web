@@ -5,30 +5,32 @@ const { buildPath } = require('../config')
 const builds = []
 
 const getFileInfo = (file) => {
-    if (file.startWith('spmod')) {
+    if (!file.startsWith('spmod')) {
         return null
     }
     const stat = statSync(join(buildPath, file))
     const fileParts = file.split('-')
 
-    const build = parts[2]
-    const commit = parts[3]
+    const build = fileParts[2]
+    const commit = fileParts[3]
 
     return {
         build,
         commit,
         file,
-        size: Math.ceil(stat.size() / 1024)
+        size: Math.ceil(stat.size / 1024)
     }
 }
 
 const buildExists = (buildId) => builds.filter(b => b.build === buildId)[0]
 const addToCache = (file => {
     const build = buildExists(file.build)
+    
+
     if (!build) {
         builds.push({
-            build,
-            commit,
+            build: file.build,
+            commit:file.commit,
             files: [{ file: file.file, size: file.size }]
         })
 
@@ -39,13 +41,13 @@ const addToCache = (file => {
 })
 
 const loadAllBuilds = () => {
-    fs.readdir(config.buildPath, (err, files) => {
+    readdir(buildPath, (err, files) => {
         if (err) throw err
 
         files.forEach(file => {
             const fileInfo = getFileInfo(file)
-
-            if (!fileInfo) {
+            
+            if (fileInfo !== null) {
                 addToCache(fileInfo)
             }
         })

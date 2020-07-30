@@ -10,7 +10,8 @@ const all = (req, res) => {
         return res
     }
 
-    return res.status(200).json(builds)
+    res.status(200)
+    res.json(builds)
 }
 
 const get = (req, res) => {
@@ -21,10 +22,11 @@ const get = (req, res) => {
         res.status(404)
         res.send('Not found')
 
-        return res
+        return
     }
 
-    return res.status(200).json(build)
+    res.status(200)
+    res.json(build)
 }
 
 module.exports = {
