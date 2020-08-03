@@ -1,27 +1,43 @@
-const HTTPServer = require('http-server')
+const hapi = require('@hapi/hapi')
+const http2 = require('http2')
 const config = require('./config')
+const Routes = require('./routes')
 
 module.exports = async () => {
-    const { buildsRoutes } = require('./builds')
-    const { awsRoutes } = require('./aws')
-    const { mainRoutes } = require('./main')
+  const server = hapi.Server({
+    tls: true,
+    port: process.env.PORT || 8080,
+    listener: http2.createSecureServer({
+      key: config.key,
+      cert: config.cert
+    }),
+    routes: {
+      cors: {
+        origin: ['*'],
+        headers: ['Authorization'],
+        exposedHeaders: ['Accept'],
+        additionalExposedHeaders: ['Accept'],
+        maxAge: 60,
+        credentials: true
+      },
+      files: {
+        relativeTo: config.publicPath
+      }
+    }
+  })
 
-    const server = HTTPServer({
-        https: {
-            key: config.key,
-            cert: config.cert,
-            allowHTTP1: true
-        },
-        server: {
-            rootPath: config.webRoot,
-            staticPath: '/dist'
-        }
-    })
-    
-    buildsRoutes.forEach(route => server.route(route.method, route.path, route.handler))
-    awsRoutes.forEach(route => server.route(route.method, route.path, route.handler))
-    mainRoutes.forEach(route => server.route(route.method, route.path, route.handler))
+  await server.register(require('@hapi/inert'))
 
-    server.listen(config.port)
+  for (const i in Routes) {
+    server.route(Routes[i])
+  }
+
+  try {
+    await server.start()
+  } catch (e) {
+    console.log(e, e.stack)
+    process.exit(1)
+  }
+
+  return server
 }
-

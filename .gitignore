@@ -1,13 +1,16 @@
 .idea/
 .vscode/
+.cache/
 
 node_modules/
 ssl/
 
+public/*
 public/builds/*
-public/dist/
 
+!public/.gitkeep
 !public/builds/.gitkeep
+
 
 
 

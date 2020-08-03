@@ -1,15 +1,13 @@
-const { resolve, join } = require('path')
+const path = require('path')
 const { readFileSync } = require('fs')
 
-const rootPath = resolve(__dirname, '../../')
-const sslPath = join(rootPath, 'ssl')
-const webRoot = join(rootPath, 'public')
-const buildPath = join(webRoot, 'builds')
+const rootPath = path.resolve(__dirname, '..', '..')
+const sslPath = path.join(rootPath, 'ssl')
+const publicPath = path.join(rootPath, 'public')
 
 module.exports = {
-    webRoot,
-    buildPath,
-    key: readFileSync(join(sslPath, 'key.pem')),
-    cert: readFileSync(join(sslPath, 'cert.pem')),
-    port: 8080
+  publicPath: publicPath,
+  buildPath: path.join(publicPath, 'builds'),
+  key: readFileSync(path.join(sslPath, 'key.pem')),
+  cert: readFileSync(path.join(sslPath, 'cert.pem'))
 }
