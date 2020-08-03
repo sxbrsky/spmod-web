@@ -4,12 +4,7 @@
 
 node_modules/
 ssl/
-
-public/*
-public/builds/*
-
-!public/.gitkeep
-!public/builds/.gitkeep
+public/
 
 
 

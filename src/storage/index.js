@@ -1,4 +1,4 @@
-const { statSync, readdir, watch } = require('fs')
+const fs = require('fs')
 const { join } = require('path')
 const { buildPath } = require('../config')
 
@@ -8,7 +8,8 @@ const getFileInfo = (file) => {
   if (!file.startsWith('spmod')) {
     return null
   }
-  const stat = statSync(join(buildPath, file))
+
+  const stat = fs.statSync(join(buildPath, file))
   const fileParts = file.split('-')
 
   const build = fileParts[2]
@@ -40,7 +41,7 @@ const addToCache = file => {
 }
 
 const loadAllBuilds = () => {
-  readdir(buildPath, (err, files) => {
+  fs.readdir(buildPath, (err, files) => {
     if (err) throw err
 
     files.forEach(file => {
@@ -54,17 +55,41 @@ const loadAllBuilds = () => {
 }
 
 try {
+  if (!fs.existsSync(buildPath)) {
+    fs.mkdir(buildPath, err => console.log(err, err.stack))
+  }
+
   loadAllBuilds()
 } catch (e) {
   console.log(e, e.stack)
 }
 
-watch(buildPath, { encoding: 'buffer' }, (event, filename) => {
-  if (filename) {
-    const fileInfo = getFileInfo(filename.toString('utf8'))
+fs.watch(buildPath, { encoding: 'utf-8' }, (event, filename) => {
+  const fullPath = join(buildPath, filename)
+  if (fs.existsSync(fullPath)) {
+    const fileInfo = getFileInfo(filename)
     addToCache(fileInfo)
+
+    return
   }
+  removeFromCache(filename)
 })
+
+
+const removeFromCache = (file) => {
+  builds.forEach(build => {
+    const toRemove = build.files.filter(b => b.file === file)[0]
+    const index = build.files.indexOf(toRemove)
+
+    if (index > -1) {
+      build.files.splice(index, 1)
+    }
+    if (build.files.length === 0) {
+      const buildIndex = builds.indexOf(build)
+      builds.splice(buildIndex, 1)
+    }
+  })
+}
 
 exports.findOne = (id) => {
   return builds.filter(b => b.build === id)[0]
