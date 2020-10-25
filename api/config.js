@@ -25,7 +25,7 @@ module.exports = {
             credentials: true
         },
         files: {
-            relativeTo: config.publicPath
+            relativeTo: `${rootPath}/public`
         }
     }
 }
