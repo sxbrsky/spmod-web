@@ -6,20 +6,6 @@ const config = require('../../config')
 
 aws.config.loadFromPath('./credentials.json')
 
-const downloadFile = (key) => {
-    return new Promise((resolve, reject) => {
-        const s3 = new aws.S3({apiVersion: '2006-03-01'})
-        const params = {Bucket: 'spmod', Key: key}
-        const file = createWriteStream(`${config.buildPath}/${params.Key}`)
-        const s3stream = s3.getObject(params).createReadStream()
-
-        s3stream.on('error', reject)
-        file.on('error', reject)
-        file.on('close', () => resolve(`${config.buildPath}/${params.Key}`))
-        s3stream.pipe(file)
-    })
-}
-
 module.exports = [
     {
         method: 'POST',
@@ -44,7 +30,24 @@ module.exports = [
                         const message = JSON.parse(msg.Message)
                         const key = message['Records'][0].s3.object.key
 
-                        await downloadFile(key).catch(e => console.log(e))
+                        const params = {Bucket: 'spmod', Key: key}
+                        const chunks = []
+
+                        const s3 = new aws.S3({apiVersion: '2006-03-01'})
+                        const file = createWriteStream(`${config.buildPath}/${params.Key}`)
+                        const stream = s3.getObject(params).createReadStream()
+
+
+                        stream.on('readable', function()  {
+                            let chunk
+
+                            while (null !== (chunk = this.read()) ) {
+                                chunks.push(chunk)
+                            }
+                        })
+
+                        stream.on('end', () => file.end(Buffer.concat(chunks)));
+                        file.on('end', () => console.log(`Build ${key} was saved with size: ${file.writableLength}`))
                     }
                 }
             })

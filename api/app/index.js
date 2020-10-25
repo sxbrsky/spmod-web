@@ -4,6 +4,8 @@ const config = require('../config')
 const Routes = require('./routes')
 
 module.exports = async () => {
+    require('./storage.js')
+
     const server = hapi.Server({
         tls: true,
         host: config.host,
@@ -18,6 +20,5 @@ module.exports = async () => {
     }
 
     await server.start().catch(e => console.log(e.stack))
-
     return server
 }
