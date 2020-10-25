@@ -3,6 +3,20 @@ const {join} = require('path')
 const {buildPath} = require('../config')
 
 const builds = []
+fs.readdir(buildPath, (e, files) => {
+    if (e) {
+        console.log(e.stack)
+        return
+    }
+
+    files.forEach(file => {
+        const fileInfo = getFileInfo(file)
+        if (fileInfo !== null) {
+            addToCache(fileInfo)
+        }
+    })
+})
+
 
 const getFileInfo = (file) => {
     if (!file.startsWith('spmod')) {
@@ -18,37 +32,23 @@ const getFileInfo = (file) => {
     return { build, commit, file, size: Math.ceil(stat.size / 1024) }
 }
 
-const buildExists = (buildId) => builds.filter(b => b.build === buildId)[0]
 const addToCache = file => {
-    const build = buildExists(file.build)
+    const build = builds.filter(b => b.build === file.build)
+    if (build.length > 0) {
+        try {
+            const index = builds.indexOf(build[0])
+            builds[index]['files'].push({ file: file.file, size: file.size })
 
-    if (!build) {
-        builds.push({
-            build: file.build,
-            commit: file.commit,
-            files: [{file: file.file, size: file.size}]
-        })
-
-        return
-    }
-    const index = builds.indexOf(build)
-    builds[index].file.push({file: file.file, size: file.size})
-}
-
-const loadAllBuilds = () => {
-    fs.readdir(buildPath, (e, files) => {
-        if (e) {
-            console.log(e.stack)
+        } catch (e) {
+            console.log(e)
             return
         }
+    }
 
-        files.forEach(file => {
-            const fileInfo = getFileInfo(file)
-
-            if (fileInfo !== null) {
-                addToCache(fileInfo)
-            }
-        })
+    builds.push({
+        build: file.build,
+        commit: file.commit,
+        files: [{file: file.file, size: file.size}]
     })
 }
 
@@ -76,9 +76,7 @@ if (!fs.existsSync(buildPath)) {
     })
 }
 
-loadAllBuilds()
-
-fs.watch(buildPath, {encoding: 'utf-8'}, (event, filename) => {
+fs.watch(buildPath, {encoding: 'utf8'}, (event, filename) => {
     const fullPath = join(buildPath, filename)
     if (fs.existsSync(fullPath)) {
         const fileInfo = getFileInfo(filename)
