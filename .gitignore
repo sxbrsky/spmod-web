@@ -2,9 +2,10 @@
 .vscode/
 .cache/
 
-node_modules/
 ssl/
-public/
+node_modules/
+htdocs/static/builds/
+
 credentials.json
 
 

@@ -1,36 +1,19 @@
 {
     "name": "spmod-web",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "description": "",
-    "main": "api/index.js",
+    "main": "src/server.js",
     "scripts": {
-        "build": "parcel build web/index.html --out-dir ./public",
-        "start:prod": "npm run build && pm2 start api/index.js --name spmod-web",
-        "start:ui": "parcel web/index.html --out-dir ./public",
-        "start:server": "nodemon api/index.js",
-        "server:restart": "pm2 restart spmod-web"
+        "dev": "nodemon ."
     },
     "author": "FFx0q",
     "license": "MIT",
     "devDependencies": {
-        "babel-core": "^6.26.3",
-        "babel-preset-env": "^1.7.0",
-        "babel-preset-react": "^6.24.1",
-        "nodemon": "^2.0.4",
-        "parcel-bundler": "^1.12.4"
+        "nodemon": "^2.0.7"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "^1.2.30",
-        "@fortawesome/free-solid-svg-icons": "^5.14.0",
-        "@fortawesome/react-fontawesome": "^0.1.11",
-        "@hapi/hapi": "^20.0.1",
-        "@hapi/inert": "^6.0.1",
-        "aws-sdk": "^2.725.0",
-        "node-sass": "^4.14.1",
-        "pm2": "^4.4.0",
-        "react": "^17.0.1",
-        "react-dom": "^17.0.1",
-        "react-router-dom": "^5.2.0",
+        "aws-sdk": "^2.842.0",
+        "micro-http": "github:macotsuu/micro-http#main",
         "sns-validator": "^0.3.4"
     }
 }
