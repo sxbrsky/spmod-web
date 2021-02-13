@@ -1,0 +1,31 @@
+html {
+  box-sizing: border-box;
+}
+
+*::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: $background-color;
+}
+
+a {
+  color: $text-color;
+  text-decoration: none;
+
+  &:hover, &:active, &:focus {
+    color: inherit;
+    text-decoration: inherit;
+  }
+}
+
+#root {
+  justify-content: center;
+  flex-wrap: wrap;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+

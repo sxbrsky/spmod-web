@@ -4,11 +4,6 @@
 
 ssl/
 node_modules/
-htdocs/static/builds/
+htdocs/static/
 
 credentials.json
-
-
-
-
-

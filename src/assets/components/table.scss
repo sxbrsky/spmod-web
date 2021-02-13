@@ -1,0 +1,28 @@
+table {
+  width: 30vw;
+
+  th {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: $brand-color;
+    text-transform: uppercase;
+  }
+
+  td {
+    color: $text-color;
+
+    i {
+      margin-right: 10px;
+    }
+
+    &:hover a, &:hover i {
+      color: $text-color;
+    }
+  }
+
+  td, th {
+    text-align: left;
+    font-size: 1.3em;
+    padding: 10px 20px;
+  }
+}

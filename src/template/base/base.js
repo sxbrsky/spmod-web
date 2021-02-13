@@ -8,12 +8,16 @@ module.exports = data => `
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             
-            <link rel="stylesheet" href="/static/css/spmod.css" />
+            <link rel="stylesheet" href="/static/css/main.css" />
         
             <title>SPMod.eu - Builds</title>
         </head>
         <body>
-            <div id="root">${header}${data}${footer}</div>
+            <div id="root">
+                ${header}
+                <div class="content">${data}</div>
+                ${footer}
+            </div>
         </body>
     </html>
 `

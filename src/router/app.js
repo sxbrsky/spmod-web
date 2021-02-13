@@ -1,11 +1,13 @@
 const renderer = require('../template')
 const storage = require('../store')
+const config = require('../config')
 
 module.exports = app => {
     app.get('/', async (req, res) => {
         const builds = storage.find()
         const html = renderer('home', builds)
 
+        res.push(`${config.path.staticPath}/static/css/main.css`)
         res.html(html)
     })
 
