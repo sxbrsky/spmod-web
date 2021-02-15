@@ -5,5 +5,6 @@
 ssl/
 node_modules/
 htdocs/static/
+htdocs/builds
 
 credentials.json

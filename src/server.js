@@ -2,18 +2,24 @@ const micro = require('micro-http')
 const config = require('./config')
 
 const server = async () => {
-    const app = micro(config.ssl)
-
-    process.on('SIGTERM', () => {
-        app.close()
-    })
+    const app = micro(config.options)
 
     require('./router')(app)
     require('./store')
 
-    app.get('/static/:path(.*)', app.static(config.path.staticPath))
+    app.use(micro.static({ path: config.path.staticPath, prefix: '/static' }))
+    app.use(micro.static({ path: config.path.buildPath, prefix: '/build' }))
+
+    app.use(micro.cors())
+
     app.listen(config.port, config.host, () => {
         console.info('Server started')
+    })
+
+    process.on('SIGTERM', () => {
+        app.close(() => {
+            console.log('HTTP Server closed.')
+        })
     })
 }
 

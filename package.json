@@ -4,16 +4,18 @@
     "description": "",
     "main": "src/server.js",
     "scripts": {
-        "sass": "sass src/assets/main.scss htdocs/static/css/main.css --watch",
+        "sass:watch": "sass src/assets/main.scss htdocs/static/css/main.css --watch",
+        "sass:build": "sass src/assets/main.scss htdocs/static/css/main.css",
         "dev:start": "pm2-dev src/server.js",
         "prod:start": "export NODE_ENV=production && pm2 start --name spmod-web --log logs.log --time src/server.js",
-        "prod:stop": "pm2 stop spmod-web"
+        "prod:stop": "pm2 stop spmod-web",
+        "postinstall": "npm run sass:build"
     },
     "author": "FFx0q",
     "license": "MIT",
     "devDependencies": {},
     "dependencies": {
-        "aws-sdk": "^2.842.0",
+        "aws-sdk": "^2.843.0",
         "micro-http": "github:macotsuu/micro-http#main",
         "pm2": "^4.5.4",
         "sass": "^1.32.7",

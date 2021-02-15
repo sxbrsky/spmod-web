@@ -7,10 +7,10 @@ const htdocsPath = resolve(rootPath, 'htdocs')
 
 module.exports = {
     path: {
-        buildPath: resolve(htdocsPath, 'static', 'builds'),
-        staticPath: htdocsPath
+        buildPath: resolve(htdocsPath, 'builds'),
+        staticPath: resolve(htdocsPath, 'static')
     },
-    ssl: {
+    options: {
         key: readFileSync(resolve(sslPath, 'key.pem')),
         cert: readFileSync(resolve(sslPath, 'cert.pem'))
     },

@@ -18,7 +18,7 @@ module.exports = build => `
             <tr>
                 <td>
                     <i class="fas fa-file-archive"></i>
-                    <a href=/static/builds/${f.file} download>${f.file}</a>
+                    <a href=/build/${f.file} download>${f.file}</a>
                 </td>
                 <td>${f.size} kb</td>
             </tr>
