@@ -7,10 +7,9 @@ const server = async () => {
     require('./router')(app)
     require('./store')
 
+    app.use(micro.cors())
     app.use(micro.static({ path: config.path.staticPath, prefix: '/static' }))
     app.use(micro.static({ path: config.path.buildPath, prefix: '/build' }))
-
-    app.use(micro.cors())
 
     app.listen(config.port, config.host, () => {
         console.info('Server started')
