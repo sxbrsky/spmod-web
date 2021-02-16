@@ -6,7 +6,7 @@ module.exports = app => {
         const builds = storage.find()
         const html = renderer('home', builds)
 
-        res.html(html)
+        res.status(200).send(html)
     })
 
     app.get('/builds/:build', async (req, res) => {
@@ -15,7 +15,6 @@ module.exports = app => {
         const data = storage.findOne(build)
         const html = renderer('build', data)
 
-        res.status(200)
-        res.html(html)
+        res.status(200).send(html)
     })
 }

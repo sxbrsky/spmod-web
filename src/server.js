@@ -1,17 +1,22 @@
-const micro = require('micro-http')
+const express = require('express')
 const config = require('./config')
 
 const server = async () => {
-    const app = micro(config.options)
-
-    require('./router')(app)
+    const app = express()
     require('./store')
 
-    app.use(micro.cors())
-    app.use(micro.static({ path: config.path.staticPath, prefix: '/static' }))
-    app.use(micro.static({ path: config.path.buildPath, prefix: '/build' }))
+    app.use((req, res, next) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    })
 
-    app.listen(config.port, config.host, () => {
+    app.use(express.json())
+    app.use('/static', express.static(config.path.staticPath))
+    app.use('/build', express.static(config.path.buildPath))
+    require('./router')(app)
+    
+    app.listen(config.port, () => {
         console.info('Server started')
     })
 

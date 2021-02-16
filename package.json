@@ -16,7 +16,7 @@
     "devDependencies": {},
     "dependencies": {
         "aws-sdk": "^2.843.0",
-        "micro-http": "github:macotsuu/micro-http#main",
+        "express": "^5.0.0-alpha.8",
         "pm2": "^4.5.4",
         "sass": "^1.32.7",
         "sns-validator": "^0.3.4"

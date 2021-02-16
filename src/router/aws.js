@@ -42,6 +42,6 @@ module.exports = app => {
                 }
             }
         })
-        res.write('ok')
+        res.status(201).end()
     })
 }
