@@ -82,7 +82,7 @@ fs.watch(path.buildPath, { encoding: 'utf8' }, (event, filename) => {
         return
     }
 
-    removeFromCache(fullPath)
+     if (event === 'rename') removeFromCache(filename)
 })
 
 exports.findOne = (build) => builds.filter(b => b.build === build)[0]

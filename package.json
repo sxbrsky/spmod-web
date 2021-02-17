@@ -9,6 +9,7 @@
         "dev:start": "pm2-dev src/server.js",
         "prod:start": "export NODE_ENV=production && pm2 start --name spmod-web --log logs.log --time src/server.js",
         "prod:stop": "pm2 stop spmod-web",
+        "prod:restart": "npm run prod:stop && npm run prod:start",
         "postinstall": "npm run sass:build"
     },
     "author": "FFx0q",
