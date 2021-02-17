@@ -1,11 +1,11 @@
 const fs = require('fs')
-const {join} = require('path')
-const {path} = require('../config')
+const { join } = require('path')
+const { path } = require('../config')
 
 const builds = []
-fs.readdir(path.buildPath, (e, files) => {
-    if (e) {
-        console.log(e.stack)
+fs.readdir(path.buildPath, (error, files) => {
+    if (error) {
+        console.error(error)
         return
     }
 
@@ -17,8 +17,7 @@ fs.readdir(path.buildPath, (e, files) => {
     })
 })
 
-
-const getFileInfo = (file) => {
+const getFileInfo = file => {
     if (!file.startsWith('spmod')) {
         return null
     }
@@ -38,21 +37,19 @@ const addToCache = file => {
         try {
             const index = builds.indexOf(build[0])
             builds[index]['files'].push({ file: file.file, size: file.size })
-
-        } catch (e) {
-            console.log(e)
-            return
+        } catch (error) {
+            console.error(error)
         }
+    } else {
+        builds.push({
+            build: file.build,
+            commit: file.commit,
+            files: [{ file: file.file, size: file.size }]
+        })
     }
-
-    builds.push({
-        build: file.build,
-        commit: file.commit,
-        files: [{file: file.file, size: file.size}]
-    })
 }
 
-const removeFromCache = (file) => {
+const removeFromCache = file => {
     builds.forEach(build => {
         const toRemove = build.files.filter(b => b.file === file)[0]
         const index = build.files.indexOf(toRemove)
@@ -67,24 +64,25 @@ const removeFromCache = (file) => {
     })
 }
 
-
 if (!fs.existsSync(path.buildPath)) {
-    fs.mkdir(path.buildPath, e => {
-        if (e) {
-            console.log(e.stack)
+    fs.mkdir(path.buildPath, error => {
+        if (error) {
+            console.error(error)
         }
     })
 }
 
-fs.watch(path.buildPath, {encoding: 'utf8'}, (event, filename) => {
+fs.watch(path.buildPath, { encoding: 'utf8' }, (event, filename) => {
     const fullPath = join(path.buildPath, filename)
-    if (fs.existsSync(fullPath)) {
+
+    if (fs.existsSync(fullPath) && event === 'change') {
         const fileInfo = getFileInfo(filename)
         addToCache(fileInfo)
 
         return
     }
-    removeFromCache(filename)
+
+    removeFromCache(fullPath)
 })
 
 exports.findOne = (build) => builds.filter(b => b.build === build)[0]
