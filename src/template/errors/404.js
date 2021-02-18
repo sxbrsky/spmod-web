@@ -1,4 +1,6 @@
 module.exports = build => `
-    <h1>404</h1>
-    <h4>Build ${build} does not exist</h4>
+    <div class='error'>
+        <h1 class='code'>404 error</h1>
+        <h4 class='message'>This build doesn't exist.</h4>
+    </div>
 `

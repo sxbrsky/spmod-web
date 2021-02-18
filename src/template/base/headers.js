@@ -1,7 +1,9 @@
 module.exports = () => `
     <header class='header'>
         <div class='brand'>
-            <h1>SPMod</h1>
+            <a href="/">
+                <h1>SPMod</h1>
+            </a>
         </div>
     </header>
 `
