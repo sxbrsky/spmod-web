@@ -14,7 +14,7 @@ module.exports = app => {
 
         const data = storage.findOne(build)
         if (!data) {
-            return res.status(404).send(renderer('error', build))
+            return res.status(404).send(renderer('errors/404', build))
         }
 
         const html = renderer('build', data)
