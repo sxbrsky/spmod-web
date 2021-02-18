@@ -30,7 +30,7 @@ module.exports = app => {
                     const chunks = []
 
                     const s3 = new aws.S3({ apiVersion: '2006-03-01' })
-                    const file = createWriteStream(`${config.path.buildPath}/${params.Key}`)
+                    const file = createWriteStream(`${config.path.buildPath}/${params.Key.split('/').pop()}`)
                     const stream = s3.getObject(params).createReadStream()
 
                     stream.on('readable', function()  {

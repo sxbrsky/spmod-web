@@ -13,6 +13,10 @@ module.exports = app => {
         const { build } = req.params
 
         const data = storage.findOne(build)
+        if (!data) {
+            return res.status(404).send(renderer('error', build))
+        }
+
         const html = renderer('build', data)
 
         res.status(200).send(html)
