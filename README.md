@@ -1,6 +1,6 @@
 # spmod-web
 web application for downloading and displaying builds from AWS S3.
-
+Live demo: [Here](https://build.spmod.eu/)
 ## Getting Started
 ### Prerequisites
 What things you need to install the software and how to install them
