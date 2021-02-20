@@ -4,8 +4,9 @@
   color: $text-color;
   padding: 1em;
 
-  .brand h1 {
-    font-weight: 500;
-    color: $brand-color;
+  .brand {
+      font-size: 2.2em;
+      font-weight: 500;
+      color: $brand-color;
   }
 }

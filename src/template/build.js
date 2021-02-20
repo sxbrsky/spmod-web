@@ -4,6 +4,7 @@ module.exports = build => `
             <tr>
                 <th>File</th>
                 <th>Size</th>
+                <th>OS</th>
             </tr>
         </thead>
         <tbody>
@@ -13,6 +14,7 @@ module.exports = build => `
                     <a href='/'>Parent directory</a>
                 </td>
                 <td><td />
+                <td></td>
             </tr>
             ${build.files.map(f => `
             <tr>
@@ -20,7 +22,8 @@ module.exports = build => `
                     <i class="fas fa-file-archive"></i>
                     <a href=/build/${f.file} download>${f.file}</a>
                 </td>
-                <td>${f.size} kb</td>
+                <td>${f.size} kB</td>
+                <td>${f.file.includes('linux') ? '<i class="fab fa-linux"></i>' : '<i class="fab fa-windows"></i>'}</td>
             </tr>
             `).join('')}
         </tbody>

@@ -13,10 +13,11 @@ table {
 
     i {
       margin-right: 10px;
+      font-size: 1.5em;
     }
 
     &:hover a, &:hover i {
-      color: $text-color;
+      color: $brand-color;
     }
   }
 
