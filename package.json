@@ -20,6 +20,7 @@
         "gulp-sass": "^4.1.0",
         "gulp-uglify": "^3.0.2",
         "node-sass": "^5.0.0",
+        "pm2": "github:Unitech/pm2#development",
         "vinyl-buffer": "^1.0.1",
         "vinyl-source-stream": "^2.0.0"
     },
@@ -27,7 +28,6 @@
         "aws-sdk": "^2.850.0",
         "express": "^5.0.0-alpha.8",
         "morgan": "^1.10.0",
-        "pm2": "^4.5.4",
         "sass": "^1.32.7",
         "sns-validator": "^0.3.4"
     }
