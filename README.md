@@ -5,8 +5,9 @@ Live demo: [Here](https://build.spmod.eu/)
 ### Prerequisites
 What things you need to install the software and how to install them
 
-* Node.js (12.18.3 or above)
-* NPM
+* [node.js](https://nodejs.org/en/) (12.18.3 or above)
+* npm
+* [gulp](https://gulpjs.com/)
 
 ### Installing
 #### Prerequisites
@@ -18,7 +19,7 @@ What things you need to install the software and how to install them
 2. Run build command
 ```npm install```
 3. Start for production
-```npm run prod:start```
+```npm run prod```
 ## Versioning
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/FFx0q/spmod-web/tags). 
 

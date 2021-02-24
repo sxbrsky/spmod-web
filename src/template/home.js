@@ -1,23 +1,14 @@
 module.exports = builds => `
-    <table>
-        <thead>
-            <tr>
-                <th>Build</th>
-                <th>Commit</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="builds">
+        <div class="builds-list">
             ${builds.map(b => `
-                <tr>
-                    <td>
-                        <i class="fas fa-folder"></i>
-                        <a href=/builds/${b.build}>${b.build}</a>
-                    </td>
-                    <td>
-                        <a href=https://github.com/Amaroq7/SPmod/commit/${b.commit}>${b.commit}</a>
-                    </td>
-                </tr>
-            `).join('')}
-        </tbody>
-    </table>
+                <div class="builds-list--item" id=${b.build}>
+                    <i class="fas fa-folder"></i>
+                    <span id=${b.build}>${b.build}</span>
+                </div>
+            `).join("")}
+        </div>
+        <div class="build-info" id="info">
+        </div>
+    </div>
 `

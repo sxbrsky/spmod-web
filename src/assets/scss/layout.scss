@@ -1,0 +1,85 @@
+.header {
+    .brand {
+        font-size: 2.2em;
+        font-weight: 500;
+        color: $brand-color;
+    }
+}
+.footer {  
+    a {
+      color: $brand-color;
+      text-decoration: none;
+    }
+  }
+
+.footer, .header {
+    width: 100%;
+    color: $text-color;
+    padding: 1em;
+    height: 10vh;
+}
+
+.content {
+    height: calc(100vh - 40vh);
+    width: 100%;
+  
+    .builds {
+        width: 100%;
+        display: flex;
+    }
+}
+
+.builds-list {
+    padding: 0 5%;
+    width: 10%;
+
+    &--item {
+        cursor: pointer;
+        color: $text-color;
+        padding: 10px 20px;
+
+        i {
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+
+        &:hover span, &:hover i {
+            color: $brand-color;
+          }
+    }
+}
+
+.build-info {
+    width: 89%;
+    color: $text-color;
+
+    .build-header {
+        flex-direction: row;
+        display: flex;
+        h3 {
+            margin: 5%;
+        }
+        h3 span, h3 a {
+            color: $brand-color;
+        }
+    }
+    .build-files {
+        &--item {
+            padding: 10px 20px;
+            text-align: left;
+            font-size: 1.3em;
+            i {
+                margin-right: 10px;
+                font-size: 1.5em;
+            }
+
+            &:hover a, &:hover i {
+                color: $brand-color;
+            }
+        }
+
+        h3 {
+            color: $brand-color;
+        }
+    }
+}

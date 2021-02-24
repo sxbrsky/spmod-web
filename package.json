@@ -1,23 +1,32 @@
 {
     "name": "spmod-web",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "description": "",
     "main": "src/server.js",
     "scripts": {
-        "sass:watch": "sass src/assets/main.scss htdocs/static/css/main.css --watch",
-        "sass:build": "sass src/assets/main.scss htdocs/static/css/main.css",
-        "dev:start": "pm2-dev src/server.js",
-        "prod:start": "export NODE_ENV=production && pm2 start --name spmod-web --log logs.log --time src/server.js",
-        "prod:stop": "pm2 stop spmod-web",
-        "prod:restart": "npm run prod:stop && npm run prod:start",
-        "postinstall": "npm run sass:build"
+        "dev": "pm2 start ecosystem.config.js --env development",
+        "prod": "pm2 start ecosystem.config.js --env production",
+        "restart": "pm2 restart ecosystem.config.js --env production",
+        "postinstall": "gulp"
     },
     "author": "FFx0q",
     "license": "MIT",
-    "devDependencies": {},
+    "devDependencies": {
+        "browserify": "^17.0.0",
+        "del": "^6.0.0",
+        "gulp": "^4.0.2",
+        "gulp-clean-css": "^4.3.0",
+        "gulp-minify": "^3.1.0",
+        "gulp-sass": "^4.1.0",
+        "gulp-uglify": "^3.0.2",
+        "node-sass": "^5.0.0",
+        "vinyl-buffer": "^1.0.1",
+        "vinyl-source-stream": "^2.0.0"
+    },
     "dependencies": {
-        "aws-sdk": "^2.845.0",
+        "aws-sdk": "^2.850.0",
         "express": "^5.0.0-alpha.8",
+        "morgan": "^1.10.0",
         "pm2": "^4.5.4",
         "sass": "^1.32.7",
         "sns-validator": "^0.3.4"

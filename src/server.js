@@ -1,10 +1,11 @@
 const express = require('express')
 const http = require('https')
 const config = require('./config')
+const morgan = require('morgan')
 
 const server = async () => {
     const app = express()
-    require('./store')
+    require('./store')()
 
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
@@ -15,6 +16,7 @@ const server = async () => {
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }))
     app.use(express.text())
+    app.use(morgan('combined'))
 
     app.use('/static', express.static(config.path.staticPath))
     app.use('/build', express.static(config.path.buildPath))

@@ -9,15 +9,14 @@ module.exports = data => `
             <meta name="viewport" content="width=device-width, initial-scale=1">
             
             <link rel="stylesheet" href="/static/css/main.css" />
-        
+            <script defer src="/static/js/main.js"></script>
+
             <title>SPMod.eu - Builds</title>
         </head>
         <body>
-            <div id="root">
-                ${header}
-                <div class="content">${data}</div>
-                ${footer}
-            </div>
+            ${header}
+            <div class="content">${data}</div>
+            ${footer}
         </body>
     </html>
 `
