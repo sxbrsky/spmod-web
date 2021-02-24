@@ -35,7 +35,7 @@ const buildHTML = build => {
         ${b.files.map(f => `
             <div class="build-files--item">
                 <i class="fas fa-file-archive"></i>
-                <a href="/builds/${f.file}" download>${f.file} (${f.size / 1024} MB)</a>
+                <a href="/build/${f.file}" download>${f.file} (${(f.size / 1024).toFixed(2)} MB)</a>
             </div>
         `).join('')}
     </div>
