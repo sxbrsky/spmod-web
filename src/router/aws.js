@@ -4,7 +4,7 @@ const aws = require('aws-sdk')
 const sns = require('sns-validator')
 const config = require('../config')
 
-aws.config.loadFromPath('./credentials.json')
+aws.config.loadFromPath(`./${config.credentials}`)
 
 module.exports = app => {
     app.post('/api/aws', async(req, res) => {

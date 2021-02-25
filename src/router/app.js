@@ -1,5 +1,5 @@
 const renderer = require('../template')
-const storage = require('../store')()
+const storage = require('../store')
 
 module.exports = app => {
     app.get('/', async (req, res) => {

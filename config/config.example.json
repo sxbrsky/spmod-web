@@ -1,0 +1,12 @@
+{
+    "port": 8443,
+    "credentials": "config/credentials.json",
+    "https": {
+        "key": "config/ssl/key.pem",
+        "cert": "config/ssl/cert.pem"
+    },
+    "dirs": {
+        "staticDir": "htdocs/static",
+        "buildsDir": "htdocs/builds"
+    }
+}

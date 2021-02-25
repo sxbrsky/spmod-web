@@ -5,7 +5,7 @@ const morgan = require('morgan')
 
 const server = async () => {
     const app = express()
-    require('./store')()
+    require('./store')
 
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
@@ -18,11 +18,11 @@ const server = async () => {
     app.use(express.text())
     app.use(morgan('combined'))
 
-    app.use('/static', express.static(config.path.staticPath))
-    app.use('/build', express.static(config.path.buildPath))
+    app.use('/static', express.static(config.staticDir))
+    app.use('/build', express.static(config.buildsDir))
     require('./router')(app)
     
-    const server = http.createServer(config.options, app)
+    const server = http.createServer(config.https, app)
     server.listen(config.port, () => console.info('Server started'))
 
     process.on('SIGTERM', () => {
