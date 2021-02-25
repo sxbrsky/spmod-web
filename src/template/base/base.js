@@ -14,9 +14,11 @@ module.exports = data => `
             <title>SPMod.eu - Builds</title>
         </head>
         <body>
-            ${header}
-            <div class="content">${data}</div>
-            ${footer}
+            <div class="container">
+                ${header}
+                <div class="content">${data}</div>
+                ${footer}
+            </div>
         </body>
     </html>
 `
