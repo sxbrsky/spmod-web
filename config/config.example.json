@@ -1,6 +1,7 @@
 {
     "port": 8443,
     "credentials": "config/credentials.json",
+    "maxBuildsOnPage": 10,
     "https": {
         "key": "config/ssl/key.pem",
         "cert": "config/ssl/cert.pem"

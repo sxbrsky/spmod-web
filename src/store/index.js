@@ -53,7 +53,7 @@ const setBuildToCache = file => {
             files: [{ file: file.file, size: file.size }]
         })
 
-        if (builds.length > 6) {
+        if (builds.length > config.maxBuildsOnPage) {
             builds.pop().files.forEach(file => fs.unlinkSync(join(config.buildsDir, file.file)))
         }
     }
