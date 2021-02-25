@@ -1,6 +1,6 @@
 {
     "name": "spmod-web",
-    "version": "0.5.1",
+    "version": "0.6.0",
     "description": "",
     "main": "src/server.js",
     "scripts": {

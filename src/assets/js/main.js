@@ -1,4 +1,4 @@
-const apiUrl = 'https://localhost:8443'
+const apiUrl = 'https://build.spmod.eu'
 
 const getCache = key  => {
     const getFromApi = async key => {
