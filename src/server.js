@@ -1,35 +1,22 @@
-const express = require('express')
-const http = require('https')
+const https = require('http')
+const app = require('./app')
 const config = require('./config')
-const morgan = require('morgan')
+const store = require('./store')
 
-const server = async () => {
-    const app = express()
-    require('./store')
+const server = https.createServer(app)
+server.listen(config.port)
 
-    app.use((req, res, next) => {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        next();
+server.on('listening', () => {
+    store.init(config.buildsDir, config.maxBuildsOnPage)
+    console.info('Server started')
+})
+
+server.on('error', error => {
+    console.error(error)
+})
+
+process.on('SIGTERM', () => {
+    server.close(() => {
+        console.log('HTTP Server closed.')
     })
-
-    app.use(express.json())
-    app.use(express.urlencoded({ extended: true }))
-    app.use(express.text())
-    app.use(morgan('combined'))
-
-    app.use('/static', express.static(config.staticDir))
-    app.use('/build', express.static(config.buildsDir))
-    require('./router')(app)
-    
-    const server = http.createServer(config.https, app)
-    server.listen(config.port, () => console.info('Server started'))
-
-    process.on('SIGTERM', () => {
-        server.close(() => {
-            console.log('HTTP Server closed.')
-        })
-    })
-}
-
-server().catch(error => console.error(error))
+})

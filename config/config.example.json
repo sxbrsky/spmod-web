@@ -7,7 +7,7 @@
         "cert": "config/ssl/cert.pem"
     },
     "dirs": {
-        "staticDir": "htdocs/static",
-        "buildsDir": "htdocs/builds"
+        "staticDir": "public",
+        "buildsDir": "public/builds"
     }
 }

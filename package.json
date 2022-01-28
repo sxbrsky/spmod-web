@@ -4,31 +4,23 @@
     "description": "",
     "main": "src/server.js",
     "scripts": {
+        "sass:build": "sass resources/scss/main.scss public/styles/style.css --source-map-urls=relative  compressed",
+        "sass:watch": "sass resources/scss/main.scss public/styles/style.css --watch",
         "dev": "pm2 start ecosystem.config.js --env development",
         "prod": "pm2 start ecosystem.config.js --env production",
-        "restart": "pm2 restart ecosystem.config.js --env production",
-        "postinstall": "gulp"
+        "restart": "pm2 restart ecosystem.config.js --env production"
     },
-    "author": "FFx0q",
+    "author": "macotsuu",
     "license": "MIT",
     "devDependencies": {
-        "browserify": "^17.0.0",
-        "del": "^6.0.0",
-        "gulp": "^4.0.2",
-        "gulp-clean-css": "^4.3.0",
-        "gulp-minify": "^3.1.0",
-        "gulp-sass": "^4.1.0",
-        "gulp-uglify": "^3.0.2",
-        "node-sass": "^5.0.0",
-        "pm2": "github:Unitech/pm2#development",
-        "vinyl-buffer": "^1.0.1",
-        "vinyl-source-stream": "^2.0.0"
+        "pm2": "^5.1.2",
+        "sass": "^1.49.0"
     },
     "dependencies": {
         "aws-sdk": "^2.850.0",
         "express": "^5.0.0-alpha.8",
+        "express-handlebars": "^6.0.2",
         "morgan": "^1.10.0",
-        "sass": "^1.32.7",
         "sns-validator": "^0.3.4"
     }
 }
